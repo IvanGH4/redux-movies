@@ -31,6 +31,17 @@ function MoviesList() {
     getMovies();
   }, [searchTerm, page, rating]);
 
+  useEffect(() => {
+    async function getInitialMovies() {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=f807dcfcc42e16bc9b4f4ecb4ae326b6&vote_average.gte=${rating}&page=${page}`
+      );
+      const data = await res.json();
+      dispatch(setMovies(data.results));
+    }
+    getInitialMovies();
+  }, []);
+
   const movies = useSelector((state) => state.moviesReducer);
 
   return (
